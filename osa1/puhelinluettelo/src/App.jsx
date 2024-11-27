@@ -1,36 +1,47 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import './index.css'
+import personService from './services/persons'
 
-const Numbers = ({ numbers, filter }) => {
+const Numbers = ({ numbers, filter, handleDelete }) => {
   if (filter) {
     numbers = numbers.filter(number => number.name.includes(filter))
   }
   return (
     <ul>
     {numbers.map(number => 
-      <Person key={number.name} person={number} />
+      <Person key={number.name} person={number} handleDelete={handleDelete} />
       )}
     </ul>
   )
 }
 
-const Person = ({ person }) => {
+const Person = ({ person, handleDelete }) => {
   return (
     <li>
-      {person.name} - {person.number}
+      {person.name} - {person.number} <DeleteButton person={person} handleDelete={handleDelete}/>
     </li>
   )
 }
 
+const DeleteButton = ({ handleDelete, person }) => {
+  return (
+    <button onClick={() => handleDelete(person)}>delete</button>
+  )
+}
+
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '040-123456' },
-    { name: 'Ada Lovelace', number: '39-44-5323523' },
-    { name: 'Dan Abramov', number: '12-43-234345' },
-    { name: 'Mary Poppendieck', number: '39-23-6423122' }
-  ]) 
+  const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
+  const [message, setMessage] = useState('')
+
+  useEffect(() => {
+    personService.getAll()
+      .then(initialPersons => {
+        setPersons(initialPersons)
+      })
+  }, [])
 
   const handleNameChange = (event) => {
     setNewName(event.target.value)
@@ -55,10 +66,33 @@ const App = () => {
       number: newNumber
     }
 
-      setPersons(persons.concat(personObject))
-      setNewName("")
+      personService.create(personObject)
+        .then(returnedPerson => {
+          setPersons(persons.concat(returnedPerson))
+          setNewName("")
+          setNewNumber("")
+          setConfMessage(`${returnedPerson.name} successfully added.`)
+        })
+
     } else {
       alert("Name already exists")
+    }
+  }
+
+  const setConfMessage = (string) => {
+    setMessage(string)
+    setTimeout(() => {
+      setMessage("")
+    }, 5000)
+  }
+
+  const handleDelete = (person) => {
+    if (window.confirm(`Delete ${person.name}?`)) {
+    personService.deletePerson(person.id)
+      .then(returned => {
+        setPersons(persons.filter(person => person.id != returned.id))
+        setConfMessage(`${returned.name} successfully deleted.`)
+    })
     }
   }
 
@@ -69,10 +103,21 @@ const App = () => {
       <h2>Add new</h2>
       <AddPersonForm addPerson={addPerson} newName={newName} handleNameChange={handleNameChange} newNumber={newNumber} handleNumberChange={handleNumberChange}/>
       <h2>Numbers</h2>
-      <Numbers filter={filter} numbers={persons} />
+      <AddSuccesfullConfirmation message={message} />
+      <Numbers filter={filter} numbers={persons} handleDelete={handleDelete} />
     </div>
   )
 
+}
+
+const AddSuccesfullConfirmation = ({message}) => {
+  if (message !== "") {
+    return (
+      <div className="addSuccessConfirmation">
+        {message}
+      </div>
+    )
+  }
 }
 
 const Filter = ({filter, handleFilterChange}) => {
