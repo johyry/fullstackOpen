@@ -16,6 +16,7 @@ const Statistics = ({good, bad, neutral}) => {
   const total = good + bad + neutral
   const average = (good+bad*-1+neutral*0)/3
   const positive = good/(good+bad)*100
+  console.log("123")
 
   if (total === 0) {
     return (
