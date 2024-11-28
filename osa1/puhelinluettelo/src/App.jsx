@@ -90,8 +90,8 @@ const App = () => {
     if (window.confirm(`Delete ${person.name}?`)) {
     personService.deletePerson(person.id)
       .then(returned => {
-        setPersons(persons.filter(person => person.id != returned.id))
-        setConfMessage(`${returned.name} successfully deleted.`)
+        setPersons(persons.filter(existingPerson => existingPerson.id != person.id))
+        setConfMessage(`${person.name} successfully deleted.`)
     })
     }
   }

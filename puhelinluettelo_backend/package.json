@@ -5,7 +5,9 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:ui": "@powershell Remove-Item -Recurse -Force dist && cd ../osa1/puhelinluettelo && npm run build && @powershell Copy-Item dist -Recurse ../../puhelinluettelo_backend",
+    "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push"
   },
   "author": "johyry",
   "license": "ISC",

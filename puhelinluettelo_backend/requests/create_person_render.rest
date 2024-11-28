@@ -1,0 +1,6 @@
+POST https://fullstackopen-slkq.onrender.com/api/persons
+Content-Type: application/json
+
+{
+"name": "Tuukka", "number": "050-6321496"
+}

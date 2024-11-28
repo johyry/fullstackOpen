@@ -1,0 +1,2 @@
+DELETE https://fullstackopen-slkq.onrender.com/api/persons/3
+
