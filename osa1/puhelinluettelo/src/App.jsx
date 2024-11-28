@@ -35,6 +35,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
   const [message, setMessage] = useState('')
+  const [color, setColor] = useState("")
 
   useEffect(() => {
     personService.getAll()
@@ -71,18 +72,32 @@ const App = () => {
           setPersons(persons.concat(returnedPerson))
           setNewName("")
           setNewNumber("")
-          setConfMessage(`${returnedPerson.name} successfully added.`)
+          setConfMessage(`${returnedPerson.name} successfully added.`, "green")
+        })
+        .catch(error => {
+          setConfMessage(error.response.data.error, "red")
         })
 
     } else {
-      alert("Name already exists")
+      if (confirm(`${personExistsAlready.name} is already added to phonebook, replace the old number with a new one?`)){
+      personExistsAlready.number = newNumber
+      personService.update(personExistsAlready.id, personExistsAlready)
+      .then(returnedPerson => {
+        setPersons(persons.filter(person => person.id !== personExistsAlready.id).concat(returnedPerson))
+        setNewName("")
+        setNewNumber("")
+        setConfMessage(`${returnedPerson.name}'s number succesfully changed.`, "green")
+      })
+      }
     }
   }
 
-  const setConfMessage = (string) => {
+  const setConfMessage = (string, color) => {
     setMessage(string)
+    setColor(color)
     setTimeout(() => {
       setMessage("")
+      setColor("")
     }, 5000)
   }
 
@@ -91,7 +106,7 @@ const App = () => {
     personService.deletePerson(person.id)
       .then(returned => {
         setPersons(persons.filter(existingPerson => existingPerson.id != person.id))
-        setConfMessage(`${person.name} successfully deleted.`)
+        setConfMessage(`${person.name} successfully deleted.`, "green")
     })
     }
   }
@@ -103,20 +118,30 @@ const App = () => {
       <h2>Add new</h2>
       <AddPersonForm addPerson={addPerson} newName={newName} handleNameChange={handleNameChange} newNumber={newNumber} handleNumberChange={handleNumberChange}/>
       <h2>Numbers</h2>
-      <AddSuccesfullConfirmation message={message} />
+      <AddSuccesfullConfirmation message={message} color={color} />
       <Numbers filter={filter} numbers={persons} handleDelete={handleDelete} />
     </div>
   )
 
 }
 
-const AddSuccesfullConfirmation = ({message}) => {
+const AddSuccesfullConfirmation = ({message, color}) => {
   if (message !== "") {
-    return (
-      <div className="addSuccessConfirmation">
-        {message}
-      </div>
-    )
+    if (color === "green") {
+      return (
+        <div className="addSuccessConfirmation">
+          {message}
+        </div>
+      )
+    } else {
+      return (
+        <div className="addFailConfirmation">
+          {message}
+        </div>
+      )
+    }
+    
+    
   }
 }
 
