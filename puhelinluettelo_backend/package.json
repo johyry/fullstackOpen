@@ -6,6 +6,7 @@
     "start": "node index.js",
     "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint .",
     "build:ui": "@powershell Remove-Item -Recurse -Force dist && cd ../osa1/puhelinluettelo && npm run build && @powershell Copy-Item dist -Recurse ../../puhelinluettelo_backend",
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push"
   },
@@ -20,6 +21,10 @@
     "morgan": "^1.10.0"
   },
   "devDependencies": {
+    "@eslint/js": "^9.15.0",
+    "@stylistic/eslint-plugin-js": "^2.11.0",
+    "eslint": "^9.15.0",
+    "globals": "^15.12.0",
     "nodemon": "^3.1.7"
   }
 }

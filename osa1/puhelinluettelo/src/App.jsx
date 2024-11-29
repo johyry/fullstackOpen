@@ -125,7 +125,7 @@ const App = () => {
 
 }
 
-const AddSuccesfullConfirmation = ({message, color}) => {
+const AddSuccesfullConfirmation = ({ message, color }) => {
   if (message !== "") {
     if (color === "green") {
       return (
@@ -145,7 +145,7 @@ const AddSuccesfullConfirmation = ({message, color}) => {
   }
 }
 
-const Filter = ({filter, handleFilterChange}) => {
+const Filter = ({ filter, handleFilterChange }) => {
   return (
     <form>
         <div>

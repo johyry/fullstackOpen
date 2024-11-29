@@ -9,7 +9,7 @@ const password = process.argv[2]
 
 const url =
   `mongodb+srv://user:${password}@cluster0.n21xs.mongodb.net/phonebookApp?retryWrites=true&w=majority&appName=Cluster0`
-  
+
 mongoose.set('strictQuery', false)
 mongoose.connect(url)
 
@@ -25,7 +25,7 @@ const note = new Note({
   important: true,
 })
 
-note.save().then(result => {
+note.save().then(() => {
   console.log('note saved!')
   mongoose.connection.close()
 })
