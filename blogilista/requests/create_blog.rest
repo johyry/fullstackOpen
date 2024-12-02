@@ -1,9 +1,11 @@
 POST http://localhost:3003/api/blogs 
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Inhkam9udHR1IiwiaWQiOiI2NzRkYmM4N2E2MTQ4MjgxY2I2OGYzMjUiLCJpYXQiOjE3MzMxNTE2MTIsImV4cCI6MTczMzE1NTIxMn0.tsPuwCVQIsdEa6mscuvL-FqQpw-N_bktMIQXcgXMwHo
 
 {
-"title": "Harry Potter and the Half Blooded Prince.", 
-"author": "J.K. Rowling",
-"url": "www.jkrowling.com",
-"likes": 54321
+"title": "Baggins boggins.", 
+"author": "In the Shire.",
+"url": "Random unit test.",
+"likes": 105
 }
+
