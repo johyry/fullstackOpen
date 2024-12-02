@@ -1,0 +1,9 @@
+POST http://localhost:3003/api/blogs 
+Content-Type: application/json
+
+{
+"title": "Harry Potter and the Half Blooded Prince.", 
+"author": "J.K. Rowling",
+"url": "www.jkrowling.com",
+"likes": 54321
+}
