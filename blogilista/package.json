@@ -5,7 +5,8 @@
   "scripts": {
     "start": "cross-env NODE_ENV=production node index.js",
     "dev": "cross-env NODE_ENV=development nodemon index.js",
-    "test": "cross-env  NODE_ENV=test node --test"
+    "test": "cross-env  NODE_ENV=test node --test",
+    "lint": "eslint ."
   },
   "author": "johyry",
   "license": "ISC",
@@ -20,7 +21,12 @@
     "mongoose": "^8.8.3"
   },
   "devDependencies": {
+    "@eslint/js": "^9.16.0",
+    "@stylistic/eslint-plugin-js": "^2.11.0",
     "cross-env": "^7.0.3",
+    "eslint": "^9.16.0",
+    "eslint-plugin-react": "^7.37.2",
+    "globals": "^15.13.0",
     "nodemon": "^3.1.7",
     "supertest": "^7.0.0"
   }

@@ -9,8 +9,8 @@ const assert = require('node:assert')
 const api = supertest(app)
 
 beforeEach(async () => {
-    await Blog.deleteMany({})
-    await Blog.insertMany(testHelper.blogs)
+  await Blog.deleteMany({})
+  await Blog.insertMany(testHelper.blogs)
 })
 
 
@@ -22,56 +22,56 @@ test('blogs are returned as json', async () => {
 })
 
 test('blogs contain a identifying field named id', async () => {
-    const response = await api.get('/api/blogs')
-    const contents = response.body.map(blog => blog)
-    const blog = contents[0]
+  const response = await api.get('/api/blogs')
+  const contents = response.body.map(blog => blog)
+  const blog = contents[0]
 
-    assert(blog.hasOwnProperty('id'))
-  })
+  assert(Object.hasOwn(blog, 'id'))
+})
 
 test('blog can be added to db', async () => {
-    const blog = {
-        title: "Walden",
-        author: "Henry David Thoreau",
-        url: "www.thoreau.com",
-        likes: 100000
-    }
-    await api.post('/api/blogs').send(blog)
+  const blog = {
+    title: 'Walden',
+    author: 'Henry David Thoreau',
+    url: 'www.thoreau.com',
+    likes: 100000
+  }
+  await api.post('/api/blogs').send(blog)
     .expect(201)
 
-    const blogsAtEnd = await testHelper.blogsInDb()
-    assert.strictEqual(blogsAtEnd.length, testHelper.blogs.length + 1)
+  const blogsAtEnd = await testHelper.blogsInDb()
+  assert.strictEqual(blogsAtEnd.length, testHelper.blogs.length + 1)
 })
 
 test('blog can be deleted', async () => {
-    const idToBeDeleted = testHelper.blogs[0]._id
-    await api.delete(`/api/blogs/${idToBeDeleted}`).expect(204)
-    
-    const blogsAtEnd = await testHelper.blogsInDb()
+  const idToBeDeleted = testHelper.blogs[0]._id
+  await api.delete(`/api/blogs/${idToBeDeleted}`).expect(204)
 
-    assert.strictEqual(blogsAtEnd.length, testHelper.blogs.length - 1)
+  const blogsAtEnd = await testHelper.blogsInDb()
+
+  assert.strictEqual(blogsAtEnd.length, testHelper.blogs.length - 1)
 
 })
 
 test('blog title can be modified', async () => {
-    const blogToBeModified = testHelper.blogs[0]
-    blogToBeModified.title = "modified title"
-    await api.put(`/api/blogs/${blogToBeModified._id}`).send(blogToBeModified).expect(200)
+  const blogToBeModified = testHelper.blogs[0]
+  blogToBeModified.title = 'modified title'
+  await api.put(`/api/blogs/${blogToBeModified._id}`).send(blogToBeModified).expect(200)
 
-    const blogsInDb = await testHelper.blogsInDb()
-    const titles = blogsInDb.map(blog => blog.title)
+  const blogsInDb = await testHelper.blogsInDb()
+  const titles = blogsInDb.map(blog => blog.title)
 
-    assert(titles.includes("modified title"))
+  assert(titles.includes('modified title'))
 })
 
 test('blog likes can be modified', async () => {
-    const blogToBeModified = testHelper.blogs[0]
-    const initialLikes = blogToBeModified.likes
-    blogToBeModified.likes = blogToBeModified.likes + 1
-    const modifieldBlog = await api.put(`/api/blogs/${blogToBeModified._id}`).send(blogToBeModified).expect(200)
-    const likesAfterSave = modifieldBlog.body.likes
+  const blogToBeModified = testHelper.blogs[0]
+  const initialLikes = blogToBeModified.likes
+  blogToBeModified.likes = blogToBeModified.likes + 1
+  const modifieldBlog = await api.put(`/api/blogs/${blogToBeModified._id}`).send(blogToBeModified).expect(200)
+  const likesAfterSave = modifieldBlog.body.likes
 
-    assert.strictEqual(initialLikes + 1, likesAfterSave)
+  assert.strictEqual(initialLikes + 1, likesAfterSave)
 })
 
 after(async () => {

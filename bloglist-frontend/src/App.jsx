@@ -19,11 +19,11 @@ const App = () => {
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs(blogs)
-    )  
+    )
   }, [])
 
   useEffect(() => {
-    const loggedInUser = window.localStorage.getItem('loggedBlogappUser') 
+    const loggedInUser = window.localStorage.getItem('loggedBlogappUser')
     if (loggedInUser) {
       const user = JSON.parse(loggedInUser)
       setUser(user)
@@ -43,14 +43,14 @@ const App = () => {
       setNotification(`${blog.title} by ${blog.author} added succesfully.`)
       blogFormRef.current.toggleVisibility()
     } catch (exception) {
-      console.log("exception:", exception, "???")
+      console.log('exception:', exception, '???')
     }
-}
+  }
 
   const setNotification = (string) => {
     setNotificationMessage(string)
     setTimeout(() => {
-      setNotificationMessage("")
+      setNotificationMessage('')
     }, 5000)
   }
 
@@ -68,7 +68,7 @@ const App = () => {
         setNotification(`Deleting blog ${blogObject.title} succesful.`)
       }
     } catch (exception) {
-      setNotification(`You can only delete your stuff mate.`)
+      setNotification('You can only delete your stuff mate.')
     }
   }
 
@@ -81,7 +81,7 @@ const App = () => {
       })
       window.localStorage.setItem(
         'loggedBlogappUser', JSON.stringify(user)
-      ) 
+      )
       blogService.setToken(user.token)
       setUser(user)
       setUsername('')
@@ -101,14 +101,14 @@ const App = () => {
       <Notification notificationMessage={notificationMessage}/>
       <h2>blogs</h2>
       {!user && <LoginForm handleLogin={handleLogin} username={username} setUsername={setUsername} password={password} setPassword={setPassword}/>}
-      {user && 
+      {user &&
       <div>
-      <LogOutButton handleLogOut={handleLogOut} />
-      <> {user.username} logged in</>
-      <Togglable buttonLabel="New Blog" ref={blogFormRef}>
-        <BlogForm createBlog={addBlog} />
-      </Togglable>
-      <br/>
+        <LogOutButton handleLogOut={handleLogOut} />
+        <> {user.username} logged in</>
+        <Togglable buttonLabel="New Blog" ref={blogFormRef}>
+          <BlogForm createBlog={addBlog} />
+        </Togglable>
+        <br/>
       </div>
       }
       {user && <BlogList blogs={blogs} addLike={addLike} deleteBlog={deleteBlog} loggedInUser={user} />}

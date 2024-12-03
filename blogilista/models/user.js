@@ -1,11 +1,11 @@
 const mongoose = require('mongoose')
 
 const userSchema = mongoose.Schema({
-    username: {
-        type: String,
-        required: true,
-        unique: true // username oltava yksikäsitteinen
-      },
+  username: {
+    type: String,
+    required: true,
+    unique: true // username oltava yksikäsitteinen
+  },
   name: String,
   passwordHash: String,
   blogs: [
