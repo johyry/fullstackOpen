@@ -1,4 +1,4 @@
-import { NewPatientEntry, Gender } from './types/types';
+import { NewPatientEntry, Gender, PatinentEntry } from './types/types';
 import { z } from 'zod';
 
 /*const isString = (text: unknown): text is string => {
@@ -70,8 +70,12 @@ const toNewPatientEntry1 = (object: unknown): NewPatientEntry => {
     throw new Error('Incorrect data: a field missing');
   };*/
 
-  export const toNewPatientEntry = (object: unknown): NewPatientEntry => {
-    return NewPatientSchema.parse(object);
+  export const toNewPatientEntry = (object: PatinentEntry): NewPatientEntry => {
+    const obj = { 
+      ...NewPatientSchema.parse(object),
+      entries: object.entries,
+    };
+    return obj;
   };
 
   export const NewPatientSchema = z.object({
